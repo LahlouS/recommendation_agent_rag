@@ -8,8 +8,8 @@ There are two things you need here.
 
 credential template for .env (replace the credentials):
 
-    NEO4J_URI = 'bolt://ip_of_the_sandbox' #change this
-    NEO4J_PASSWORD = 'pswd' #change this
+    NEO4J_URI = 'bolt://ip_of_the_sandbox' 
+    NEO4J_PASSWORD = 'pswd'
     NEO4J_USERNAME = 'neo4j'
     AURA_DS = False
     LLM = 'gpt-4'
