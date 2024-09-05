@@ -1,5 +1,5 @@
 import pandas as pd
-from neo4j_tools import gds_db_load
+from neo4j_tools import gds_db_load, gds_utils
 
 from database.neo4jConnection_utils import db_connection, get_credential
 
@@ -61,4 +61,36 @@ def create_db(gds_client):
         RETURN count(p) AS propertySetCount
         """)
     print('LOG: product.text property is set')
-    
+
+def create_node_embedding(gds_client):
+
+    #clear past GDS analysis in the case of re-running
+    gds_utils.clear_all_gds_graphs(gds_client)
+    gds_utils.delete_relationships('CUSTOMERS_ALSO_LIKE', gds_client, src_node_label='Article')
+
+
+    # graph projection - project co-purchase graph into analytics workspace
+    gds_client.run_cypher('''
+    MATCH (a1:Article)<-[:PURCHASED]-(:Customer)-[:PURCHASED]->(a2:Article)
+    WITH gds.graph.project("proj", a1, a2,
+        {sourceNodeLabels: labels(a1),
+        targetNodeLabels: labels(a2),
+        relationshipType: "COPURCHASE"}) AS g
+    RETURN g.graphName
+    ''')
+    g = gds_client.graph.get("proj")
+
+    # create FastRP node embeddings
+    gds_client.fastRP.mutate(g, mutateProperty='embedding', embeddingDimension=128, randomSeed=7474, concurrency=4, iterationWeights=[0.0, 1.0, 1.0])
+
+    # draw KNN
+    knn_stats = gds_client.knn.write(g, nodeProperties=['embedding'], nodeLabels=['Article'],
+                    writeRelationshipType='CUSTOMERS_ALSO_LIKE', writeProperty='score',
+                    sampleRate=1.0, initialSampler='randomWalk', concurrency=1, similarityCutoff=0.75, randomSeed=7474)
+
+    # write embeddings back to database to introspect later
+    gds_client.graph.writeNodeProperties(g, ['embedding'], ['Article'])
+
+    # clear graph projection once done
+    g.drop()
+    return knn_stats
