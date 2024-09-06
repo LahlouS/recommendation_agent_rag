@@ -18,13 +18,18 @@ def kg_personalized_search_gen(customer_id, credentials, embedding_model):
         WITH count(a) AS purchaseScore, product, searchScore
         RETURN product.text + '\nurl: ' + 'https://representative-domain/product/' + product.productCode  AS text,
             (1.0+purchaseScore)*searchScore AS score,
-            {{source: 'https://representative-domain/product/' + product.productCode}} AS metadata
+            {{source: 'https://representative-domain/product/' + product.productCode,
+                purchaseScore: purchaseScore,
+                searchScore: searchScore}} AS metadata
         ORDER BY purchaseScore DESC, searchScore DESC LIMIT 5
     """
     )
 
+def kg_recommendations_app_dict(_dict):
+    return _kg_recommendations_app(_dict['customer_id'], _dict['credentials'], _dict['k'])
+
 # Use the same personalized recommendations as above but with a smaller limit
-def kg_recommendations_app(customer_id, credentials, k=30):
+def _kg_recommendations_app(customer_id, credentials, k=30):
     kg = Neo4jGraph(url=credentials['NEO4J_URI'], 
                     username=credentials['NEO4J_USERNAME'], 
                     password=credentials['NEO4J_PASSWORD'])
@@ -37,4 +42,4 @@ def kg_recommendations_app(customer_id, credentials, k=30):
     ORDER BY recommenderScore DESC LIMIT $k
     """, params={'customerId': customer_id, 'k':k})
 
-    return "\n\n".join([d['text'] for d in res])
+    return "\n\n".join([d['text'] + '\nscore:' + str(d['recommenderScore']) for d in res])
