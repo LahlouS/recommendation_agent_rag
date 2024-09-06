@@ -20,7 +20,7 @@ def push_embeddings(gds_client, productcode_embedding_dict):
         res = gds_client.run_cypher('''
         UNWIND $recs AS rec
         MATCH(n:Product {productCode: rec.productCode})
-        WHERE NOT exists(n.textEmbedding)
+        WHERE n.textEmbedding IS NULL
         CALL db.create.setNodeVectorProperty(n, "textEmbedding", rec.textEmbedding)
         RETURN count(n) AS propertySetCount
         ''', params={'recs': recs})
