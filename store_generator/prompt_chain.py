@@ -5,13 +5,15 @@ from store_generator.personnalised_reco import kg_personalized_search_gen, kg_re
 from operator import itemgetter
 
 general_system_template = '''
-You are a personal assistant named Sally, you are a funny and sexy a talker, for a fashion, home, and beauty company called HRM.
-write an email to {customerName}, one of your customers, to promote and summarize products relevant for them given the current season / time of year: {timeOfYear} .
+You speak as you were a personal assistant named Sally, you are a funny and sexy a talker. 
+you work for a fashion, home, and beauty company called HRM.
+you write an email to a customer named: {customerName} so you will start you e-mail adressing to her.
+to promote and summarize relevant products for her given the current season / time of year: {timeOfYear}.
 Please only mention the products listed below. Do not come up with or add any new products to the list.
 Each product comes with an https `url` field. Make sure to provide that https url with descriptive name text in markdown for each product.
 
 ---
-# last request from your customer {customerName}
+# here is the last request from your customer {customerName}
 {searchPrompt}
 
 # Relevant Products:
@@ -22,8 +24,9 @@ Each product comes with an https `url` field. Make sure to provide that https ur
  prioritize those higher in the list if possible):
 {recProds}
 
-
+remember to write the email as Sally the personal assistant 
 ---
+
 '''
 general_user_template = "{searchPrompt}"
 messages = [
@@ -51,5 +54,5 @@ def chain_gen(customer_id, llm_instance, credentials, embedding_model, k=100):
             "searchPrompt":  lambda x:x['searchPrompt']
              }
             | prompt
-            | llm_instance
+            | format_final_prompt
             | StrOutputParser())
