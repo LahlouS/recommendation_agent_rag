@@ -29,7 +29,7 @@ def kg_recommendations_app_dict(_dict):
     return _kg_recommendations_app(_dict['customer_id'], _dict['credentials'], _dict['k'])
 
 # Use the same personalized recommendations as above but with a smaller limit
-def _kg_recommendations_app(customer_id, credentials, k=30):
+def _kg_recommendations_app(customer_id, credentials, k=5):
     kg = Neo4jGraph(url=credentials['NEO4J_URI'], 
                     username=credentials['NEO4J_USERNAME'], 
                     password=credentials['NEO4J_PASSWORD'])

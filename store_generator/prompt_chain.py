@@ -43,10 +43,10 @@ def format_final_prompt(x):
    '''
 
 # LLM chain
-def chain_gen(customer_id, llm_instance, credentials, embedding_model, k=100):
+def chain_gen(customer_id, llm_instance, credentials, embedding_model, k=5):
     
     populated_prompt = {
-                'searchProds': (lambda x:x['searchPrompt'])| kg_personalized_search_gen(customer_id, credentials, embedding_model).as_retriever(search_kwargs={"k": 100}) | format_docs,
+                'searchProds': (lambda x:x['searchPrompt'])| kg_personalized_search_gen(customer_id, credentials, embedding_model).as_retriever(search_kwargs={"k": 5}) | format_docs,
                 'recProds': (lambda x:{'customer_id': customer_id, 'credentials': credentials, 'k': k}) | RunnableLambda(kg_recommendations_app_dict),
                 'customerName': lambda x:x['customerName'],
                 'timeOfYear': lambda x:x['timeOfYear'],
