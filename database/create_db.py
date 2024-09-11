@@ -3,11 +3,19 @@ from neo4j_tools import gds_db_load, gds_utils
 
 from database.neo4jConnection_utils import db_connection, get_credential
 
-department_df = pd.read_csv('./dataset/department.csv')
-product_df = pd.read_csv('./dataset/product.csv')
-article_df = pd.read_csv('./dataset/article.csv')
-customer_df = pd.read_csv('./dataset/customer.csv')
-transaction_df = pd.read_csv('./dataset/transaction.csv')
+department_df = pd.DataFrame()
+product_df = pd.DataFrame()
+article_df = pd.DataFrame()
+customer_df = pd.DataFrame()
+transaction_df = pd.DataFrame()
+
+def load_csv(base_path):
+    department_df = pd.read_csv(base_path + '/department.csv')
+    product_df = pd.read_csv(base_path + '/product.csv')
+    article_df = pd.read_csv(base_path + '/article.csv')
+    customer_df = pd.read_csv(base_path + '/customer.csv')
+    transaction_df = pd.read_csv(base_path + '/transaction.csv')
+    
 
 def read_csv(path):
     return pd.read_csv(path)
