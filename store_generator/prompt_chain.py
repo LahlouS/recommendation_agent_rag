@@ -13,8 +13,6 @@ Please only mention the products listed below. Do not come up with or add any ne
 Each product comes with an https `url` field. Make sure to provide that https url with descriptive name text in markdown for each product.
 
 ---
-# here is the last request from your customer {customerName}
-{searchPrompt}
 
 # Relevant Products:
 {searchProds}
@@ -28,7 +26,7 @@ remember to write the email as Sally the personal assistant
 ---
 
 '''
-general_user_template = "{searchPrompt}"
+general_user_template = "hello, my name is {customerName} and I'm looking for {searchPrompt}"
 messages = [
     SystemMessagePromptTemplate.from_template(general_system_template),
     HumanMessagePromptTemplate.from_template(general_user_template),
@@ -46,13 +44,16 @@ def format_final_prompt(x):
 
 # LLM chain
 def chain_gen(customer_id, llm_instance, credentials, embedding_model, k=100):
+    
+    populated_prompt = {
+                'searchProds': (lambda x:x['searchPrompt'])| kg_personalized_search_gen(customer_id, credentials, embedding_model).as_retriever(search_kwargs={"k": 100}) | format_docs,
+                'recProds': (lambda x:{'customer_id': customer_id, 'credentials': credentials, 'k': k}) | RunnableLambda(kg_recommendations_app_dict),
+                'customerName': lambda x:x['customerName'],
+                'timeOfYear': lambda x:x['timeOfYear'],
+                "searchPrompt":  lambda x:x['searchPrompt']
+                } | prompt
+    
     return ({
-            'searchProds': (lambda x:x['searchPrompt'])| kg_personalized_search_gen(customer_id, credentials, embedding_model).as_retriever(search_kwargs={"k": 100}) | format_docs,
-            'recProds': (lambda x:{'customer_id': customer_id, 'credentials': credentials, 'k': k}) | RunnableLambda(kg_recommendations_app_dict),
-            'customerName': lambda x:x['customerName'],
-            'timeOfYear': lambda x:x['timeOfYear'],
-            "searchPrompt":  lambda x:x['searchPrompt']
-             }
-            | prompt
-            | format_final_prompt
-            | StrOutputParser())
+            'output': (populated_prompt | llm_instance | StrOutputParser()),
+            'prompt': (populated_prompt | format_final_prompt | StrOutputParser())
+            })
