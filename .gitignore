@@ -167,3 +167,5 @@ cython_debug/
 #dataset
 dataset/*.csv
 
+# gradio interface log
+flagged
