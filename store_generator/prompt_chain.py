@@ -57,3 +57,19 @@ def chain_gen(customer_id, llm_instance, credentials, embedding_model, k=5):
             'output': (populated_prompt | llm_instance | StrOutputParser()),
             'prompt': (populated_prompt | format_final_prompt | StrOutputParser())
             })
+
+# LLM chain
+def chain_gen_v2(kg_personalized_search_gen, kg_recommendations_app_dict, llm_instance, k=5):
+    
+    populated_prompt = {
+                'searchProds': (lambda x:x['searchPrompt'])| kg_personalized_search_gen.as_retriever(search_kwargs={"k": k}) | format_docs,
+                'recProds': RunnableLambda(kg_recommendations_app_dict),
+                'customerName': lambda x:x['customerName'],
+                'timeOfYear': lambda x:x['timeOfYear'],
+                "searchPrompt":  lambda x:x['searchPrompt']
+                } | prompt
+    
+    return ({
+            'output': (populated_prompt | llm_instance | StrOutputParser()),
+            'prompt': (populated_prompt | format_final_prompt | StrOutputParser())
+            })
