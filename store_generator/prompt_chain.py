@@ -26,7 +26,7 @@ remember to write the email as Sally the personal assistant
 ---
 
 '''
-general_user_template = "hello, my name is {customerName} and I'm looking for {searchPrompt}"
+general_user_template = "hello, my name is {customerName} and I'm looking for: {searchPrompt}"
 messages = [
     SystemMessagePromptTemplate.from_template(general_system_template),
     HumanMessagePromptTemplate.from_template(general_user_template),
