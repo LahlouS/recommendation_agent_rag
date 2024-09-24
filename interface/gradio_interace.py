@@ -100,15 +100,17 @@ class ModelInterface():
 
         start_time = time.perf_counter()
         gen = self.old_get_chain(customer_id)
-        output = gen.invoke['output']({'searchPrompt':x[3], 'customerName':x[2], 'timeOfYear': x[1]})
-        prompt = gen.invoke['prompt']({'searchPrompt':x[3], 'customerName':x[2], 'timeOfYear': x[1]})
+        output = gen['output'].invoke({'searchPrompt':x[3], 'customerName':x[2], 'timeOfYear': x[1]})
+        prompt = gen['prompt'].invoke({'searchPrompt':x[3], 'customerName':x[2], 'timeOfYear': x[1]})
         end_time = time.perf_counter()
         exec_time = end_time - start_time
 
         utils.write_to_file((self.log_path + 'old_out_' + x[4]), output)
         utils.write_to_file((self.log_path + 'old_prompt_' + x[4]), prompt)
 
-        return [output, prompt, exec_time]
+        return [output,
+                prompt,
+                str(exec_time)]
 
     def _kg_recommendations_app(self, kg, query):
         def query_function(x):
