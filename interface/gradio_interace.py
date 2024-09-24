@@ -12,7 +12,7 @@ class ModelInterface():
         self.chain_cach = dict()
         self.creds = db_credentials
         self.llm_name = db_credentials['LLM']
-        
+
         self.llm_instance = Ollama(model=self.llm_name, temperature=model_temperature)
         self.embedding_model = OllamaEmbeddings(model=self.llm_name, base_url='http://localhost:11434')
         self.search_client_query = ncs.prompt_search_client(self.creds, self.embedding_model)
@@ -42,13 +42,13 @@ class ModelInterface():
 
         chain = self.get_chain(customer_id, self.search_client_query, reco_query_func)
         params = {'searchPrompt':x[3], 'customerName':x[2], 'timeOfYear': x[1]}
-        
-        output = chain['output'].invoke(params),
+
+        output = chain['output'].invoke(params)
         prompt = chain['prompt'].invoke(params)
         end = time.perf_counter()
         exec_time = str(end - start)
-        
-        
+
+
         utils.write_to_file((self.log_path + 'prompt_' + x[4]), prompt)
         utils.write_to_file((self.log_path + 'out_' + x[4]), output)
 
@@ -69,11 +69,11 @@ class ModelInterface():
         message_result = gr.Markdown(label="Message")
         generated_prompt = gr.Markdown(label="Generated prompt")
         exec_time = gr.Markdown(label="Execution Time")
-        
+
         fn = self.message_generator
         if func_to_use is False:
             fn=self.old_message_generator
-        
+
         interface = gr.Interface(fn=fn,
                             inputs=[customer_id,
                                     time_of_year,
@@ -83,7 +83,7 @@ class ModelInterface():
                             outputs=[message_result, generated_prompt, exec_time],
                             title="🪄 personalised email Generator 🥳")
         return interface
-    
+
 
     def old_get_chain(self, customer_id):
         if customer_id in self.chain_cach:
@@ -109,7 +109,7 @@ class ModelInterface():
         utils.write_to_file((self.log_path + 'old_prompt_' + x[4]), prompt)
 
         return [output, prompt, exec_time]
-    
+
     def _kg_recommendations_app(self, kg, query):
         def query_function(x):
             return kg.query(query)
