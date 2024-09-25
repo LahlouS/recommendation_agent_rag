@@ -1,11 +1,18 @@
 import gradio as gr
 from store_generator.prompt_chain import prompt as chatPromptTemplate
+from store_generator.prompt_chain import format_docs, format_final_prompt
+
 from langchain_community.llms import Ollama
 from langchain_community.embeddings.ollama import OllamaEmbeddings
+from langchain.prompts import SystemMessagePromptTemplate, HumanMessagePromptTemplate, ChatPromptTemplate
+from langchain.schema import StrOutputParser
+from langchain.schema.runnable import RunnableLambda
+
 from store_generator import neo_client_setup as ncs
 from store_generator import cypher_augmented_query as caq
 import utils.utils as utils
 import time
+
 
 class ModelInterface():
 	def __init__(self, db_credentials, model_temperature=0.2, k=5):
@@ -73,17 +80,16 @@ class ModelInterface():
         return gen
 
 	def chain_gen(self, customer_id, k=5):
-		, llm_instance, credentials, embedding_model,
 		populated_prompt = {
 					'searchProds': (lambda x:x['searchPrompt'])| self._kg_vector_similarity_search(customer_id).as_retriever(search_kwargs={"k": k}) | format_docs,
-					'recProds': (lambda x:customer_id) | RunnableLambda(kg_recommendations_app_dict),
+					'recProds': (lambda x:customer_id) | RunnableLambda(self._graph_customer_also_like_search),
 					'customerName': lambda x:x['customerName'],
 					'timeOfYear': lambda x:x['timeOfYear'],
 					"searchPrompt":  lambda x:x['searchPrompt']
 					} | chatPromptTemplate
 
 		return ({
-				'output': (populated_prompt | sel.llm_instance | StrOutputParser()),
+				'output': (populated_prompt | self.llm_instance | StrOutputParser()),
 				'prompt': (populated_prompt | format_final_prompt | StrOutputParser())
 				})
 
