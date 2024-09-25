@@ -15,11 +15,8 @@ class ModelInterface():
 
         self.llm_instance = Ollama(model=self.llm_name, temperature=model_temperature)
         self.embedding_model = OllamaEmbeddings(model=self.llm_name, base_url='http://localhost:11434')
-        self.search_client_query = ncs.prompt_search_client(self.creds, self.embedding_model)
-        self.reco_client_query = ncs.reco_search_client({
-            'credentials': self.creds,
-            'k': k
-        })
+        self.search_client_query = ncs.set_vector_search(self.creds, self.embedding_model)
+        self.reco_client_query = ncs.set_graph_search(self.creds)
         self.log_path = './result/'
 
     def get_chain(self, customer_id, search_client_query, reco_query):
