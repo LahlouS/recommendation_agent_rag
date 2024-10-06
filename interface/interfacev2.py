@@ -17,67 +17,67 @@ import time
 class ModelInterface():
 	def __init__(self, db_credentials, model_temperature=0.2, k=5):
 		self.chain_cach = dict()
-        self.creds = db_credentials
-        self.llm_name = db_credentials['LLM']
+		self.creds = db_credentials
+		self.llm_name = db_credentials['LLM']
 
-        self.llm_instance = Ollama(model=self.llm_name, temperature=model_temperature)
-        self.embedding_model = OllamaEmbeddings(model=self.llm_name, base_url='http://localhost:11434')
+		self.llm_instance = Ollama(model=self.llm_name, temperature=model_temperature)
+		self.embedding_model = OllamaEmbeddings(model=self.llm_name, base_url='http://localhost:11434')
 
 		self.db_vector_search = ncs.set_vector_search(self.creds, self.embedding_model)
 		self.db_graph_search = ncs.set_graph_search(self.creds)
-        self.log_path = './result/'
+		self.log_path = './result/'
 
 	def get_interface(self):
-        customer_id = gr.Textbox(label="Customer ID")
-        time_of_year = gr.Textbox(label="Time Of Year")
-        search_prompt_txt = gr.Textbox(label="Customer Interests(s)")
-        customer_name = gr.Textbox(label="Customer Name")
-        run_name = gr.Textbox(label="Log filename"
-                              )
-        message_result = gr.Markdown(label="Message")
-        generated_prompt = gr.Markdown(label="Generated prompt")
-        exec_time = gr.Markdown(label="Execution Time")
+		customer_id = gr.Textbox(label="Customer ID")
+		time_of_year = gr.Textbox(label="Time Of Year")
+		search_prompt_txt = gr.Textbox(label="Customer Interests(s)")
+		customer_name = gr.Textbox(label="Customer Name")
+		run_name = gr.Textbox(label="Log filename"
+							  )
+		message_result = gr.Markdown(label="Message")
+		generated_prompt = gr.Markdown(label="Generated prompt")
+		exec_time = gr.Markdown(label="Execution Time")
 
-        interface = gr.Interface(fn=self.message_generator,
-                            inputs=[customer_id,
-                                    time_of_year,
-                                    customer_name,
-                                    search_prompt_txt,
-                                    run_name],
-                            outputs=[message_result, generated_prompt, exec_time],
-                            title="🪄 personalised email Generator 🥳")
-        return interface
+		interface = gr.Interface(fn=self.message_generator,
+							inputs=[customer_id,
+									time_of_year,
+									customer_name,
+									search_prompt_txt,
+									run_name],
+							outputs=[message_result, generated_prompt, exec_time],
+							title="🪄 personalised email Generator 🥳")
+		return interface
 
 	def message_generator(self, *x):
-        customer_id = x[0]
-        params = {'searchPrompt':x[3], 'customerName':x[2], 'timeOfYear': x[1]}
+		customer_id = x[0]
+		params = {'searchPrompt':x[3], 'customerName':x[2], 'timeOfYear': x[1]}
 		run_name = x[4]
 
-        start = time.perf_counter()
+		start = time.perf_counter()
 		chain = self.get_chain(customer_id)
-        output = chain['output'].invoke(params)
-        prompt = chain['prompt'].invoke(params)
-        end = time.perf_counter()
-        exec_time = str(end - start)
+		output = chain['output'].invoke(params)
+		prompt = chain['prompt'].invoke(params)
+		end = time.perf_counter()
+		exec_time = str(round(end - start, 5))
 
 		# TODO remove when interface will be more serious than gradio
-        utils.write_to_file((self.log_path + 'prompt_' + run_name), prompt)
-        utils.write_to_file((self.log_path + 'out_' + run_name), output)
+		utils.write_to_file((self.log_path + 'prompt_' + run_name), prompt)
+		utils.write_to_file((self.log_path + 'out_' + run_name), output)
 
 
-        return [
-                    output,
-                    '\n\nINPUT PROMPT' + prompt,
-                    '\n\nEXECUTION TIME' + exec_time
-                ]
+		return [
+					output,
+					'\n\nINPUT PROMPT' + prompt,
+					'\n\nEXECUTION TIME: ' + exec_time
+				]
 
 
-    def get_chain(self, customer_id):
-        if customer_id in self.chain_cach:
-            return self.chain_cach[customer_id]
-        gen = self.chain_gen(customer_id)
-        self.chain_cach[customer_id] = gen
-        return gen
+	def get_chain(self, customer_id):
+		if customer_id in self.chain_cach:
+			return self.chain_cach[customer_id]
+		gen = self.chain_gen(customer_id)
+		self.chain_cach[customer_id] = gen
+		return gen
 
 	def chain_gen(self, customer_id, k=5):
 		populated_prompt = {

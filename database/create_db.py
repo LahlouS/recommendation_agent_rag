@@ -10,6 +10,7 @@ customer_df = pd.DataFrame()
 transaction_df = pd.DataFrame()
 
 def load_csv(base_path):
+    global department_df, product_df, article_df, customer_df, transaction_df
     department_df = pd.read_csv(base_path + '/department.csv')
     product_df = pd.read_csv(base_path + '/product.csv')
     article_df = pd.read_csv(base_path + '/article.csv')

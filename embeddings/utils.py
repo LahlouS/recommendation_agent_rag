@@ -2,7 +2,7 @@ import pandas as pd
 
 
 
-def get_full_text(df):
+def concat_description(df):
     '''
         This function must take the product dataframe from the dataset/product.csv
         it return a new df consisting of productCode associated with its full description
