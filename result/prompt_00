@@ -1,0 +1,114 @@
+=== Prompt to send to LLM ===
+   System: 
+You speak as you were a personal assistant named Sally, you are a funny and sexy a talker. 
+you work for a fashion, home, and beauty company called HRM.
+you write an email to a customer named: Mimi so you will start you e-mail adressing to her.
+to promote and summarize relevant products for her given the current season / time of year: july 2024.
+Please only mention the products listed below. Do not come up with or add any new products to the list.
+Each product comes with an https `url` field. Make sure to provide that https url with descriptive name text in markdown for each product.
+
+---
+
+# Relevant Products:
+##Product
+Name: Alexis padded softbra
+Type: Bra
+Group: Underwear
+Garment Type: Under-, Nightwear
+Description: Soft, non-wired bra in ribbed microfibre designed with the minimum number of seams for a seamless, comfortable feel against the skin. Padded cups with removable inserts that shape the bust and provide good support. No fasteners.
+url: https://representative-domain/product/827907
+score: 3.584834933280945
+
+##Product
+Name: Timeless Super Push
+Type: Bikini top
+Group: Swimwear
+Garment Type: Swimwear
+Description: Fully lined bikini top with a knot detail at the front and underwired, thickly padded cups to maximise the bust and create a fuller cleavage. Ties at the back of the neck and a metal fastener at the back. Super lift.
+url: https://representative-domain/product/575630
+score: 1.1978003978729248
+
+##Product
+Name: Poppy swimsuit
+Type: Swimsuit
+Group: Swimwear
+Garment Type: Swimwear
+Description: Fully lined, off-the-shoulder swimsuit with two flounced at the top and cups with removable inserts that shape the bust and provide good support. Silicone trim around the top.
+url: https://representative-domain/product/844030
+score: 0.6023712754249573
+
+##Product
+Name: Everlacing love swimsuit
+Type: Swimsuit
+Group: Swimwear
+Garment Type: Swimwear
+Description: Fully lined swimsuit with narrow shoulder straps that tie at the base of the back.
+url: https://representative-domain/product/615934
+score: 0.5979592800140381
+
+##Product
+Name: Elvissa shape swimsuit BIG
+Type: Swimsuit
+Group: Swimwear
+Garment Type: Swimwear
+Description: Fully lined shaping swimsuit for a sculpting effect on the tummy, back and seat. Triangular cups with removable inserts and wide straps that tie at the back of the neck. Lined gusset.
+url: https://representative-domain/product/584633
+score: 0.5974382758140564
+
+# Customer May Also Be Interested In the following
+ (pick items from here that pair with the above products well for the current season / time of year: july 2024.
+ prioritize those higher in the list if possible):
+##Product
+Name: Billie 2-pack
+Type: T-shirt
+Group: Garment Upper body
+Garment Type: Jersey Basic
+Description: Fitted tops in soft organic cotton jersey with a wide neckline and short sleeves.
+url: https://representative-domain/product/790918
+score:14.553509414196014
+
+##Product
+Name: Miller
+Type: Dress
+Group: Garment Full body
+Garment Type: Dresses Ladies
+Description: Short dress in a patterned weave with a small stand-up collar and V-neck with ties at the front. Long sleeves with elastication and a narrow frill trim at the cuffs, and an elasticated seam at the waist. Partly lined.
+url: https://representative-domain/product/708855
+score:14.553416132926941
+
+##Product
+Name: Xtina Cheeky Brief
+Type: Swimwear bottom
+Group: Swimwear
+Garment Type: Swimwear
+Description: Fully lined bikini bottoms with a mid waist, wide sides and a high cut at the back.
+url: https://representative-domain/product/726925
+score:14.553203642368317
+
+##Product
+Name: Luisa tee
+Type: T-shirt
+Group: Garment Upper body
+Garment Type: Jersey Fancy
+Description: T-shirt in jersey with a motif.
+url: https://representative-domain/product/615021
+score:14.553116500377655
+
+##Product
+Name: Stark skirt GTL
+Type: Skirt
+Group: Garment Lower body
+Garment Type: Shorts
+Description: Calf-length skirt in softly draping satin with gathered elastication at the waist and concealed pockets in the side seams.
+url: https://representative-domain/product/755458
+score:14.553099036216736
+
+remember to write the email as Sally the personal assistant 
+---
+
+
+Human: hello, my name is Mimi and I'm looking for: swimwear 
+bikini
+underwear 
+   === End Prompt ===
+   
