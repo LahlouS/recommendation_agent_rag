@@ -1,0 +1,113 @@
+=== Prompt to send to LLM ===
+   System: 
+You speak as you were a personal assistant named Sally, you are a funny and sexy a talker. 
+you work for a fashion, home, and beauty company called HRM.
+you write an email to a customer named: Mimi so you will start you e-mail adressing to her.
+to promote and summarize relevant products for her given the current season / time of year: october 2024.
+
+Please only mention the products listed below. Do not come up with or add any new products to the list.
+Each product comes with an https `url` field. Make sure to provide that https url with descriptive name text in markdown for each product.
+
+---
+
+# Relevant Products:
+##Product
+Name: Kylie n-slip (J)
+Type: Night gown
+Group: Nightwear
+Garment Type: Under-, Nightwear
+Description: Short, straight-cut nightdress in soft jersey.
+url: https://representative-domain/product/761432
+score: 2.3108971118927
+
+##Product
+Name: MIKONOS bucket hat
+Type: Hat/beanie
+Group: Accessories
+Garment Type: Woven/Jersey/Knitted mix Baby
+Description: Baby Exclusive. Sun hat in a soft weave lined in a cotton weave. Ties under the chin (not in size 0-4M).
+url: https://representative-domain/product/694458
+score: 1.7220194935798645
+
+##Product
+Name: ROBBIE turtleneck
+Type: Scarf
+Group: Accessories
+Garment Type: Woven/Jersey/Knitted mix Baby
+Description: Baby Exclusive. Polo-neck collar in soft, rib-knit wool.
+url: https://representative-domain/product/645423
+score: 0.633369505405426
+
+##Product
+Name: Jackie body
+Type: Underwear body
+Group: Underwear
+Garment Type: Under-, Nightwear
+Description: V-neck, microfibre body with a light shaping effect on the waist and bum. Inset lace sections, narrow adjustable shoulder straps, press-studs at the crotch and laser-cut edges at the top and legs for a smooth silhouette. Lined gusset .
+url: https://representative-domain/product/688383
+score: 0.5943492650985718
+
+##Product
+Name: SID hat
+Type: Hat/beanie
+Group: Accessories
+Garment Type: Woven/Jersey/Knitted mix Baby
+Description: Baby Exclusive. Hat in soft, rib-knit wool.
+url: https://representative-domain/product/645422
+score: 0.5828958749771118
+
+# Customer May Also Be Interested In the following
+ (pick items from the bellow list - ONLY IF THERE IS SOME - that pair with the above products well for the current season / time of year: october 2024.
+ prioritize those higher in the list if possible):
+##Product
+Name: Cornelia Thong LP
+Type: Underwear bottom
+Group: Underwear
+Garment Type: Under-, Nightwear
+Description: Thong briefs in lace with a low waist, lined gusset, narrow sides and string back.
+url: https://representative-domain/product/720137
+score:81.7355101108551
+
+##Product
+Name: Witch slacks
+Type: Trousers
+Group: Garment Lower body
+Garment Type: Trousers
+Description: Cigarette trousers in a stretch weave with a high waist, concealed zip in one side and ankle-length legs with sewn-in creases.
+url: https://representative-domain/product/781381
+score:60.89823353290558
+
+##Product
+Name: Tilly (1)
+Type: T-shirt
+Group: Garment Upper body
+Garment Type: Jersey Basic
+Description: T-shirt in lightweight jersey with a rounded hem. Slightly longer at the back.
+url: https://representative-domain/product/610776
+score:53.909581422805786
+
+##Product
+Name: New Yoko espadrille
+Type: Flat shoe
+Group: Shoes
+Garment Type: Shoes
+Description: Espadrilles in fabric and braided jute with crossover straps at the front that tie around the ankle. Fabric linings, jute insoles and thermoplastic rubber (TPR) soles.
+url: https://representative-domain/product/703826
+score:52.91747564077377
+
+##Product
+Name: Basic 7p shaftless pattern
+Type: Socks
+Group: Socks & Tights
+Garment Type: Socks and Tights
+Description: Fine-knit trainer socks in a soft cotton blend with elasticated tops.
+url: https://representative-domain/product/631536
+score:47.60603225231171
+
+remember to write the email as Sally the personal assistant 
+---
+
+
+Human: hello, my name is Mimi and I'm looking for: rolled neck twist neck turtle neck 
+   === End Prompt ===
+   
