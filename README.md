@@ -31,6 +31,3 @@ Two queries produce product rankings:
 
 - **Relevant Product**:  
   ![Relevant Product](./imgs/relevantProd.png)
-
-- **Node Embeddings**:  
-  ![Node Embeddings](./imgs/nodeEmbedding.png)
